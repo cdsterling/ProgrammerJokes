@@ -1,0 +1,114 @@
+<!doctype html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bare-css@2.0.3/css/bare.min.css" />
+    <style>
+      .Accordion {
+        overflow: hidden;
+        transition: height 0.2s,
+                    padding 0.2s,
+                    min-height 0.2s;
+        height: 100px;
+        box-sizing: border-box;
+      }
+
+      .Accordion--collapsed {
+        height: 0 !important;
+        min-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      </style>
+
+    </head>
+    <body>
+        <h1>Gif Search</h1>
+        <section id="setup" class="">
+          <p>This is a joke</p>
+        </section>
+        <section>
+            <button onClick="toggle()">Get Punchline</button>
+        </section>
+        <section id="punchline" class="Accordion Accordion--collapsed">
+          <p>This is a punchline</p>
+        </section>
+        <section>
+            <button onClick="fetchJoke()">New Joke</button>
+        </section>
+        <!-- <section>
+          <input placeholder="Search for a new joke" id="search" />
+        </section> -->
+<script>
+    let state = {
+        // / Placeholder data until we add real data... /
+        data: [],
+    };
+
+    function render() {
+        let output = document.querySelector('#output');
+        output.innerHTML = '';
+
+        for (let gif of state.data) {
+            let image = document.createElement('img');
+            image.setAttribute('src', gif.images.preview_gif.url);
+            output.appendChild(image);
+
+        }
+
+
+    }
+
+    function fetchJoke(){
+        console.log("Entering fetchJoke function");
+        let jokeType = 'programming';
+
+        // let searchTerm = document.querySelector('#search').value;
+        // if( searchTerm != ''){
+        //     jokeType = searchTerm;
+        // }
+
+
+        fetch(`https://official-joke-api.appspot.com/jokes/${jokeType}/random`)
+        .then(response => response.json())
+        .then(data =>{
+            console.log(data);
+            state.data = data;
+        })
+        .then(() => { displayJoke() })
+    }
+
+
+    function displayJoke(){
+        console.log("entering displayJoke funciton");
+        let setupDiv = document.querySelector('#setup');
+        let punchlineDiv = document.querySelector('#punchline');
+        setupDiv.innerHTML='';
+        punchlineDiv.innerHTML='';
+
+        let setup = document.createElement('p');
+        setupDiv.innerHTML = state.data[0].setup;
+        console.log(setup.innerHTML )
+        let punchline = document.createElement('p');
+        punchlineDiv.innerHTML = state.data[0].punchline;
+
+        // setupDiv.appendChild(setup);
+        // punchlineDiv.appendChild(punchline);
+    }
+
+    function toggle() {
+      console.log('toggle')
+      let more_info_element = document.querySelector('#punchline');
+      more_info_element.classList.toggle("Accordion--collapsed");
+
+      // let more_info_button = document.querySelector("#show-punchline-button");
+      // if (more_info_button.innerHTML === "Show Punchline ↑") {
+      //   more_info_button.innerHTML = "Punchline: ↓";
+      // } else {
+      //   more_info_button.innerHTML = "Show Punchline ↑";
+      // }
+    }
+fetchJoke()
+</script>
+</body>
+</html>
