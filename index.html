@@ -83,9 +83,14 @@
         console.log("entering displayJoke funciton");
         let setupDiv = document.querySelector('#setup');
         let punchlineDiv = document.querySelector('#punchline');
+        
+        
         setupDiv.innerHTML='';
         punchlineDiv.innerHTML='';
 
+        if (!punchlineDiv.classList.contains('Accordion--collapsed')){
+            punchlineDiv.classList.toggle('Accordion--collapsed');
+        }
         let setup = document.createElement('p');
         setupDiv.innerHTML = state.data[0].setup;
         console.log(setup.innerHTML )
